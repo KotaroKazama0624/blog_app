@@ -3,6 +3,11 @@
 
 ## 環境構築手順
 ### backend
+以下の2箇所.env.templateをコピーして同じ階層に.envファイルを作成する
+- backend/.env.template
+- backend/docker/postgres/.env.template
+
+docker-composeコマンドで起動する
 ```
 cd backend
 docker-compose up
