@@ -7,6 +7,7 @@
 cd backend
 docker-compose up
 ```
+http://localhost:8000
 
 ### frontend
 
