@@ -11,4 +11,4 @@ RUN pipenv lock --pre
 RUN pipenv install --system --dev
 RUN pipenv install --system --deploy
 RUN apk del build-tools
-ADD . /usr/src/app/
+COPY . /usr/src/app/
