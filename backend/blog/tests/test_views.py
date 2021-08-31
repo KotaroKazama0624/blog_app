@@ -64,3 +64,63 @@ class PostCreateTests(TestCase):
         data = {}
         response = self.client.post(reverse('blog:post_create'), data=data)
         self.assertEqual(response.status_code, 200)
+
+class PostDetailTests(TestCase):
+    #PostDetailView のテストクラス
+
+    def test_not_fount_pk_get(self):
+        #記事を登録せず、空の状態で存在しない記事のプライマリキーでアクセスした時に 404 が返されることを確認
+        response = self.client.get(
+            reverse('blog:post_detail', kwargs={'pk': 1}),
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_get(self):
+        #GET メソッドでアクセスしてステータスコード200を返されることを確認
+        post = Post.objects.create(title='test_title', text='test_text')
+        response = self.client.get(
+            reverse('blog:post_detail', kwargs={'pk': post.pk}),
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, post.title)
+        self.assertContains(response, post.text)
+
+class PostUpdateTests(TestCase):
+    #PostUpdateView のテストクラス
+
+    def test_not_fount_pk_get(self):
+        #記事を登録せず、空の状態で存在しない記事のプライマリキーでアクセスした時に 404 が返されることを確認
+        response = self.client.get(
+            reverse('blog:post_update', kwargs={'pk': 1}),
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_get(self):
+        #GET メソッドでアクセスしてステータスコード200を返されることを確認
+        post = Post.objects.create(title='test_title', text='test_text')
+        response = self.client.get(
+            reverse('blog:post_update', kwargs={'pk': post.pk}),
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, post.title)
+        self.assertContains(response, post.text)
+
+class PostDeleteTests(TestCase):
+    #PostDeleteView のテストクラス
+
+    def test_not_fount_pk_get(self):
+        #記事を登録せず、空の状態で存在しない記事のプライマリキーでアクセスした時に 404 が返されることを確認
+        response = self.client.get(
+            reverse('blog:post_delete', kwargs={'pk': 1}),
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_get(self):
+        #GET メソッドでアクセスしてステータスコード200を返されることを確認
+        post = Post.objects.create(title='test_title', text='test_text')
+        response = self.client.get(
+            reverse('blog:post_delete', kwargs={'pk': post.pk}),
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, post.title)
+        self.assertContains(response, post.text)
