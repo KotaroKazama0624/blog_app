@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
-from ..views import IndexView, PostListView
+from ..views import  PostListView
 
 class TestUrls(TestCase):
   #Post 一覧ページへのリダイレクトをテスト
