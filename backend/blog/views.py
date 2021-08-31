@@ -19,3 +19,15 @@ class PostCreateView(generic.CreateView):
     form_class = PostCreateForm
     # 記事作成に成功した時のリダイレクト先を指定
     success_url = reverse_lazy('blog:post_list')
+
+class PostDetailView(generic.DetailView):
+    model = Post 
+
+class PostUpdateView(generic.UpdateView):
+    model = Post
+    form_class = PostCreateForm 
+    success_url = reverse_lazy('blog:post_detail')
+
+class PostDeleteView(generic.DeleteView): 
+    model = Post
+    success_url = reverse_lazy('blog:post_list')
