@@ -21,13 +21,17 @@ class PostCreateView(generic.CreateView):
     success_url = reverse_lazy('blog:post_list')
 
 class PostDetailView(generic.DetailView):
+    template_name = 'post_detail.html'
     model = Post 
 
 class PostUpdateView(generic.UpdateView):
+    template_name = 'post_form.html'
     model = Post
     form_class = PostCreateForm 
     success_url = reverse_lazy('blog:post_detail')
 
-class PostDeleteView(generic.DeleteView): 
+class PostDeleteView(generic.DeleteView):
+    template_name = 'post_confirm_delete.html'
     model = Post
+    #削除をしてしまうとアクセス対象の記事がなくなってしまうので、詳細画面 (post_detail) にはリダイレクトさせない
     success_url = reverse_lazy('blog:post_list')
