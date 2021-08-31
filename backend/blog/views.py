@@ -4,8 +4,6 @@ from .forms import PostCreateForm
 from .models import Post
 
 # Create your views here.
-class IndexView(generic.TemplateView):
-    template_name = 'index.html'
 
 class PostListView(generic.ListView):
     template_name = 'post_list.html'
