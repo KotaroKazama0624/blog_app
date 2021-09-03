@@ -5,6 +5,7 @@ from .models import Post
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 
@@ -18,6 +19,18 @@ def usercreatefunc(request):
         except IntegrityError:
             return render(request, 'usercreate.html', {'error':'このユーザーはすでに登録されています'})
     return render(request, 'usercreate.html')
+
+def loginfunc(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return render(request, 'login.html', {'context':'ログインできました'})
+        else:
+            return render(request, 'login.html', {'context':'ログインできませんでした'})
+    return render(request, 'login.html', {'context':'get method'})
 
 class PostListView(generic.ListView):
     template_name = 'post_list.html'
