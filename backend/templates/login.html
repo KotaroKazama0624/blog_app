@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <body class="text-center">
     {{ context }}
     <form class="form-signin" method="POST">
@@ -10,3 +13,4 @@
         <button class="w-100 btn btn-lg btn-primary" type="submit">ログイン</button>
     </form>
 </body>
+{% endblock %}
