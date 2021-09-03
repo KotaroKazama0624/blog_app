@@ -2,10 +2,10 @@ from django.views import generic
 from django.urls import reverse_lazy
 from .forms import PostCreateForm 
 from .models import Post
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
@@ -27,10 +27,15 @@ def loginfunc(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return render(request, 'login.html', {'context':'ログインできました'})
+            return redirect('blog:post_list')
         else:
             return render(request, 'login.html', {'context':'ログインできませんでした'})
     return render(request, 'login.html', {'context':'get method'})
+
+def logoutfunc(request):
+    logout(request)
+    return redirect('blog:login')
+
 
 class PostListView(generic.ListView):
     template_name = 'post_list.html'
