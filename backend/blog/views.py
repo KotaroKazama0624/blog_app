@@ -2,8 +2,22 @@ from django.views import generic
 from django.urls import reverse_lazy
 from .forms import PostCreateForm 
 from .models import Post
+from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.db import IntegrityError
 
 # Create your views here.
+
+def usercreatefunc(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        try:
+            user = User.objects.create_user(username, '', password)
+            return render(request, 'usercreate.html')
+        except IntegrityError:
+            return render(request, 'usercreate.html', {'error':'このユーザーはすでに登録されています'})
+    return render(request, 'usercreate.html')
 
 class PostListView(generic.ListView):
     template_name = 'post_list.html'
