@@ -1,11 +1,11 @@
 from django.urls import path, include
-from .views import PostListView, PostCreateView, PostDetailView, PostUpdateView, PostDeleteView, usercreatefunc
+from .views import PostListView, PostCreateView, PostDetailView, PostUpdateView, PostDeleteView, usercreatefunc,loginfunc
 
 app_name = 'blog'
 
 urlpatterns = [
-    path('usercreate/', usercreatefunc),
-    path('login/', loginfunc),
+    path('usercreate/', usercreatefunc, name='usercreate'),
+    path('login/', loginfunc, name='login'),
     path('post_list/', PostListView.as_view(), name='post_list'),
     path('post_create/', PostCreateView.as_view(), name='post_create'),
     path('post_detail/<int:pk>/', PostDetailView.as_view(), name='post_detail'), 
