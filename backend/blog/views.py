@@ -1,8 +1,8 @@
 from django.views import generic
 from django.urls import reverse_lazy
-from .forms import PostCreateForm 
-from .models import Post
-from django.shortcuts import render, redirect
+from .forms import PostCreateForm, CommentCreateForm 
+from .models import Post, Comment
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
@@ -36,6 +36,15 @@ def logoutfunc(request):
     logout(request)
     return redirect('blog:login')
 
+#def postcommentfunc(request, pk):
+#    #記事ページ
+#    detail = get_object_or_404(Post, pk=pk)
+#    context = {
+#    "detail": detail,
+#    "comments": Comment.objects.filter(target=detail.id)   #該当記事のコメントだけを渡す
+#    }
+#    return redirect('blog:post_list')
+
 
 class PostListView(generic.ListView):
     template_name = 'post_list.html'
@@ -52,7 +61,14 @@ class PostCreateView(generic.CreateView):
 
 class PostDetailView(generic.DetailView):
     template_name = 'post_detail.html'
-    model = Post 
+    model = Post
+    def postdetail(request, pk):
+       detail = get_object_or_404(Post, pk=pk)
+       context = {
+           "detail": detail,
+           "comments": Comment.objects.filter(target=detail.id)   #該当記事のコメントだけを渡します。
+       }
+
 
 class PostUpdateView(generic.UpdateView):
     template_name = 'post_form.html'
@@ -65,3 +81,22 @@ class PostDeleteView(generic.DeleteView):
     model = Post
     #削除をしてしまうとアクセス対象の記事がなくなってしまうので、詳細画面 (post_detail) にはリダイレクトさせない
     success_url = reverse_lazy('blog:post_list')
+
+class CommentCreate(generic.CreateView):
+    #コメント投稿ページのビュー
+    template_name = 'comment_form.html'
+    model = Comment
+    form_class = CommentCreateForm
+ 
+    def form_valid(self, form):
+        post_pk = self.kwargs['pk']
+        post = get_object_or_404(Post, pk=post_pk)
+        comment = form.save(commit=False)
+        comment.target = post
+        comment.save()
+        return redirect('blog:post_detail', pk=post_pk)
+ 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
+        return context

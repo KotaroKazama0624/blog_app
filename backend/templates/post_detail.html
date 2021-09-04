@@ -15,5 +15,11 @@
       <th>日付</th>
       <td>{{ post.date }}</td>
     </tr>
+    <!--{% for comment in comments %}
+    <div class='border-bottom'>{{ comment.name }}　{{ comment.created_at }}</div><div class='mt-2'>{{ comment.text }}</div>
+    {% endfor %}
+    -->
 </table>
+<a href="{% url 'blog:comment_create' post.pk %}">コメントする</a>
+
 {% endblock %}
